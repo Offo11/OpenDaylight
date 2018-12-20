@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2017 Cisco Systems, Inc. and others.  All rights reserved.
+
+ This program and the accompanying materials are made available under the
+ terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ and is available at http://www.eclipse.org/legal/epl-v10.html
+ -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.opendaylight.odlparent</groupId>
+        <artifactId>single-feature-parent</artifactId>
+        <version>4.0.2</version>
+        <relativePath/>
+    </parent>
+    <groupId>org.opendaylight.integration</groupId>
+    <artifactId>odl-integration-compatible-with-all</artifactId>
+    <!-- TODO: Shorter name? -->
+    <version>0.10.0-SNAPSHOT</version>
+    <packaging>feature</packaging>
+    <!-- <name> formatting is used by autorelease to parse and notify projects on
+         build failure. Please do not modify this unless you have a good reason. -->
+    <name>ODL :: integration :: ${project.artifactId}</name>
+    <description>Single feature containing all features compatible together.</description>
+    <url>https://wiki.opendaylight.org/view/Integration/Distribution</url>
+    <licenses>
+        <license>
+            <name>Eclipse Public License v1.0</name>
+            <url>http://www.eclipse.org/legal/epl-v10.html</url>
+        </license>
+    </licenses>
+    <!-- FIXME: Add developers section -->
+    <scm>
+        <connection>scm:git:https://git.opendaylight.org/gerrit/integration/distribution.git</connection>
+        <developerConnection>scm:git:ssh://git.opendaylight.org:29418/integration/distribution.git</developerConnection>
+        <url>https://git.opendaylight.org/gerrit/gitweb?p=integration/distribution.git;a=tree;f=features/singles/odl-integration-compatible-with-all;hb=HEAD</url>
+        <tag>HEAD</tag>
+    </scm>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>all-artifacts</artifactId>
+                <version>${project.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- User facing single features. Alphabetical order -->
+    <profiles>
+        <!-- AAA -->
+        <profile>
+            <id>aaa</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.opendaylight.aaa</groupId>
+                    <artifactId>odl-aaa-shiro</artifactId>
+                    <type>xml</type>
+                    <classifier>features</classifier>
+                </dependency>
+            </dependencies>
+        </profile>
+        <!-- BGPCEP -->
+        <profile>
+            <id>bgpcep</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.opendaylight.bgpcep</groupId>
+                    <artifactId>odl-bgpcep-bgp</artifactId>
+                    <type>xml</type>
+                    <classifier>features</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>org.opendaylight.bgpcep</groupId>
+                    <artifactId>odl-bgpcep-bmp</artifactId>
+                    <type>xml</type>
+                    <classifier>features</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>org.opendaylight.bgpcep</groupId>
+                    <artifactId>odl-bgpcep-pcep</artifactId>
+                    <type>xml</type>
+                    <classifier>features</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>org.opendaylight.bgpcep</groupId>
+                    <artifactId>odl-bgpcep-rsvp</artifactId>
+                    <type>xml</type>
+                    <classifier>features</classifier>
+                </dependency>
+            </dependencies>
+        </profile>
+        <!-- Daexim -->
+        <profile>
+            <id>daexim</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.opendaylight.daexim</groupId>
+                    <artifactId>odl-daexim-all</artifactId>
+                    <type>xml</type>
+                    <classifier>features</classifier>
+                </dependency>
+            </dependencies>
+        </profile>
+        <!-- InfraUtils -->
+        <profile>
+            <id>infrautils</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.opendaylight.infrautils</groupId>
+                    <artifactId>odl-infrautils-ready</artifactId>
+                    <type>xml</type>
+                    <classifier>features</classifier>
+                </dependency>
+            </dependencies>
+        </profile>
+        <!-- LISP Flow Mapping -->
+        <profile>
+            <id>lispflowmapping</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.opendaylight.lispflowmapping</groupId>
+                    <artifactId>odl-lispflowmapping-msmr</artifactId>
+                    <type>xml</type>
+                    <classifier>features</classifier>
+                </dependency>
+            </dependencies>
+        </profile>
+        <!-- Netconf -->
+        <profile>
+            <id>netconf</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.opendaylight.netconf</groupId>
+                    <artifactId>odl-mdsal-apidocs</artifactId>
+                    <classifier>features</classifier>
+                    <type>xml</type>
+                </dependency>
+                <dependency>
+                    <groupId>org.opendaylight.netconf</groupId>
+                    <artifactId>odl-restconf</artifactId>
+                    <classifier>features</classifier>
+                    <type>xml</type>
+                </dependency>
+                <dependency>
+                    <groupId>org.opendaylight.netconf</groupId>
+                    <artifactId>odl-yanglib</artifactId>
+                    <classifier>features</classifier>
+                    <type>xml</type>
+                </dependency>
+            </dependencies>
+        </profile>
+        <!-- Neutron Northbound -->
+        <profile>
+            <id>neutron</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.opendaylight.neutron</groupId>
+                    <artifactId>odl-neutron-service</artifactId>
+                    <type>xml</type>
+                    <classifier>features</classifier>
+                </dependency>
+            </dependencies>
+        </profile>
+        <!-- OpenflowPlugin -->
+        <profile>
+            <id>openflowplugin</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.opendaylight.openflowplugin</groupId>
+                    <artifactId>odl-openflowplugin-flow-services-rest</artifactId>
+                    <type>xml</type>
+                    <classifier>features</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>org.opendaylight.openflowplugin</groupId>
+                    <artifactId>odl-openflowplugin-nxm-extensions</artifactId>
+                    <type>xml</type>
+                    <classifier>features</classifier>
+                </dependency>
+            </dependencies>
+        </profile>
+        <!-- OVSDB -->
+        <profile>
+            <id>ovsdb</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.opendaylight.ovsdb</groupId>
+                    <artifactId>odl-ovsdb-library</artifactId>
+                    <type>xml</type>
+                    <classifier>features</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>org.opendaylight.ovsdb</groupId>
+                    <artifactId>odl-ovsdb-hwvtepsouthbound</artifactId>
+                    <type>xml</type>
+                    <classifier>features</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>org.opendaylight.ovsdb</groupId>
+                    <artifactId>odl-ovsdb-southbound-impl</artifactId>
+                    <type>xml</type>
+                    <classifier>features</classifier>
+                </dependency>
+            </dependencies>
+        </profile>
+        <!-- SFC -->
+        <profile>
+            <id>sfc</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.opendaylight.sfc</groupId>
+                    <artifactId>odl-sfc-ovs</artifactId>
+                    <type>xml</type>
+                    <classifier>features</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>org.opendaylight.sfc</groupId>
+                    <artifactId>odl-sfc-sb-rest</artifactId>
+                    <type>xml</type>
+                    <classifier>features</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>org.opendaylight.sfc</groupId>
+                    <artifactId>odl-sfclisp</artifactId>
+                    <type>xml</type>
+                    <classifier>features</classifier>
+                </dependency>
+                <dependency>
+                    <groupId>org.opendaylight.sfc</groupId>
+                    <artifactId>odl-sfc-shell</artifactId>
+                    <type>xml</type>
+                    <classifier>features</classifier>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+</project>

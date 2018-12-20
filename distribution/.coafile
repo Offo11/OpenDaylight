@@ -1,0 +1,33 @@
+[all]
+# TODO: How to ignore extracted K4 distros but not useful stuff? (/karaf/**)
+ignore = .tox/**, .git/**, .gitignore, .gitreview, **.sw?, **.orig,
+         karaf/target/**, **distribution-karaf**
+
+[GitCommit]
+bears = GitCommitBear
+ignore_length_regex = Signed-off-by,
+    Also-by,
+    Co-authored-by,
+    http://,
+    https://
+
+[all.spacing]
+bears = SpaceConsistencyBear
+# TODO: Enable this and fix errors
+enabled = False
+use_spaces = True
+enforce_newline_at_EOF = False
+files = **
+# default_actions = SpaceConsistencyBear: ApplyPatchAction
+
+[all.shell]
+bears = ShellCheckBear
+# TODO: Enable this and fix errors
+enabled = False
+files = **.sh
+
+[all.xml]
+bears = XMLBear
+# TODO: Enable this and fix errors
+enabled = False
+files = **.xml

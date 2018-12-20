@@ -1,0 +1,97 @@
+/*
+ * Copyright (c) 2017 Pantheon Technologies s.r.o. and others.  All rights reserved.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ */
+package org.opendaylight.protocol.data.change.counter;
+
+import static java.util.Objects.requireNonNull;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import javax.annotation.concurrent.GuardedBy;
+import org.opendaylight.mdsal.binding.api.DataBroker;
+import org.opendaylight.mdsal.binding.api.DataObjectModification;
+import org.opendaylight.mdsal.binding.api.DataTreeChangeListener;
+import org.opendaylight.mdsal.binding.api.DataTreeIdentifier;
+import org.opendaylight.mdsal.binding.api.DataTreeModification;
+import org.opendaylight.mdsal.common.api.LogicalDatastoreType;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.params.xml.ns.yang.bgpcep.data.change.counter.config.rev170424.DataChangeCounterConfig;
+import org.opendaylight.yangtools.concepts.ListenerRegistration;
+import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class TopologyDataChangeCounterDeployer implements DataTreeChangeListener<DataChangeCounterConfig>,
+        AutoCloseable {
+    private static final Logger LOG = LoggerFactory.getLogger(TopologyDataChangeCounterDeployer.class);
+    private static final InstanceIdentifier<DataChangeCounterConfig> DATA_CHANGE_COUNTER_IID =
+            InstanceIdentifier.builder(DataChangeCounterConfig.class).build();
+    private final DataBroker dataBroker;
+    @GuardedBy("this")
+    private final Map<String, TopologyDataChangeCounter> counters = new HashMap<>();
+    private ListenerRegistration<TopologyDataChangeCounterDeployer> registration;
+
+    public TopologyDataChangeCounterDeployer(final DataBroker dataBroker) {
+        this.dataBroker = requireNonNull(dataBroker);
+    }
+
+    public synchronized void register() {
+        this.registration = this.dataBroker.registerDataTreeChangeListener(
+            DataTreeIdentifier.create(LogicalDatastoreType.CONFIGURATION, DATA_CHANGE_COUNTER_IID), this);
+        LOG.info("Data change counter Deployer initiated");
+    }
+
+
+    @Override
+    public synchronized void onDataTreeChanged(
+            final Collection<DataTreeModification<DataChangeCounterConfig>> changes) {
+        for (final DataTreeModification<DataChangeCounterConfig> dataTreeModification : changes) {
+            final DataObjectModification<DataChangeCounterConfig> rootNode = dataTreeModification.getRootNode();
+            switch (dataTreeModification.getRootNode().getModificationType()) {
+                case DELETE:
+                    deleteCounterChange(rootNode.getDataBefore().getCounterId());
+                    break;
+                case SUBTREE_MODIFIED:
+                case WRITE:
+                    final DataChangeCounterConfig change = rootNode.getDataAfter();
+                    chandleCounterChange(change.getCounterId(), change.getTopologyName());
+                    break;
+                default:
+                    LOG.error("Unhandled modification Type: {}",
+                            dataTreeModification.getRootNode().getModificationType());
+                    break;
+            }
+        }
+    }
+
+    private synchronized void deleteCounterChange(final String counterId) {
+        final TopologyDataChangeCounter oldCounter = this.counters.remove(counterId);
+        if (oldCounter != null) {
+            LOG.info("Data change counter Deployer deleted: {}", counterId);
+            oldCounter.close();
+        }
+    }
+
+    private synchronized void chandleCounterChange(final String counterId, final String topologyName) {
+        deleteCounterChange(counterId);
+        LOG.info("Data change counter Deployer created: {} / {}", counterId, topologyName);
+
+        final TopologyDataChangeCounter counter = new TopologyDataChangeCounter(this.dataBroker,
+                counterId, topologyName);
+        this.counters.put(counterId, counter);
+    }
+
+    @Override
+    public synchronized void close() {
+        LOG.info("Closing Data change counter Deployer");
+
+        if (this.registration != null) {
+            this.registration.close();
+            this.registration = null;
+        }
+    }
+}

@@ -1,0 +1,14 @@
+module test-import {
+
+    yang-version 1;
+    namespace "urn:test:simple:test:import";
+    prefix "test-import";
+
+    revision 2017-04-21;
+
+    container _.my-import-.cont {
+        leaf test-leaf {
+            type string;
+        }
+    }
+}

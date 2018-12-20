@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- vi: set et smarttab sw=4 tabstop=4: -->
+<!--
+ Copyright (c) 2013 Cisco Systems, Inc. and others.  All rights reserved.
+
+ This program and the accompanying materials are made available under the
+ terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ and is available at http://www.eclipse.org/legal/epl-v10.html
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>org.opendaylight.odlparent</groupId>
+        <artifactId>odlparent-lite</artifactId>
+        <version>4.0.2</version>
+        <relativePath/>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.opendaylight.mdsal.model</groupId>
+    <artifactId>model-ietf-aggregator</artifactId>
+    <version>3.0.2-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+    <description>${project.artifactId}</description>
+
+    <modules>
+        <!-- RFC6991 -->
+        <module>rfc6991</module>
+        <module>rfc6991-ietf-inet-types</module>
+        <module>rfc6991-ietf-yang-types</module>
+        <module>ietf-type-util</module>
+
+        <!-- RFC7223 Interface Management -->
+        <!-- FIXME: superseded by RFC8343 -->
+        <module>rfc7223</module>
+
+        <!-- RFC7277 IP Management -->
+        <!-- FIXME: superseded by RFC8344 -->
+        <module>rfc7277</module>
+
+        <!-- RFC7895 YANG Module Library -->
+        <module>rfc7895</module>
+
+        <!-- RFC7895 YANG Metadata -->
+        <module>rfc7952</module>
+
+        <!-- RFC8294 Common YANG Data Types for the Routing Area -->
+        <module>rfc8294</module>
+        <module>rfc8294-ietf-routing-types</module>
+
+        <!-- RFC8342 Network Management Datastore Architecture -->
+        <module>rfc8342</module>
+        <module>rfc8342-ietf-datastores</module>
+        <module>rfc8342-ietf-origin</module>
+
+        <!-- RFC8343 Interface Management -->
+        <module>rfc8343</module>
+
+        <!-- RFC8344 IP Management -->
+        <module>rfc8344</module>
+
+        <!-- RFC8345 Network Topologies -->
+        <module>rfc8345</module>
+        <module>rfc8345-ietf-network</module>
+        <module>rfc8345-ietf-network-state</module>
+        <module>rfc8345-ietf-network-topology</module>
+        <module>rfc8345-ietf-network-topology-state</module>
+
+        <!-- RFC8348 Hardware Management -->
+        <module>rfc8348</module>
+        <module>rfc8348-ietf-hardware</module>
+        <module>rfc8348-ietf-hardware-state</module>
+
+        <!-- RFC8349 Routing Management -->
+        <module>rfc8349</module>
+        <module>rfc8349-ietf-routing</module>
+        <module>rfc8349-ietf-ipv4-unicast-routing</module>
+        <module>rfc8349-ietf-ipv6-unicast-routing</module>
+
+        <module>ietf-packet-fields</module>
+        <module>ietf-access-control-list</module>
+        <module>ietf-lisp-address-types</module>
+
+        <!-- Legacy IETF topology models -->
+        <module>ietf-ted</module>
+        <module>ietf-topology</module>
+        <module>ietf-topology-isis</module>
+        <module>ietf-topology-l3-unicast-igp</module>
+        <module>ietf-topology-ospf</module>
+
+        <!-- Legacy RESTCONF -->
+        <!-- FIXME: move this to the netconf project -->
+        <module>ietf-restconf</module>
+    </modules>
+
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+        <maven.install.skip>true</maven.install.skip>
+    </properties>
+</project>

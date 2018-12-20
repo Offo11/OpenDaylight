@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- vi: set et smarttab sw=4 tabstop=4: -->
+<!--
+ Copyright (c) 2017 Cisco Systems, Inc. and others.  All rights reserved.
+
+ This program and the accompanying materials are made available under the
+ terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ and is available at http://www.eclipse.org/legal/epl-v10.html
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.opendaylight.odlparent</groupId>
+        <artifactId>odlparent-lite</artifactId>
+        <version>4.0.2</version>
+        <relativePath/>
+    </parent>
+    <groupId>org.opendaylight.integration</groupId>
+    <artifactId>properties</artifactId>
+    <version>0.10.0-SNAPSHOT</version>
+    <!-- This is a parent POM, it cannot act as an aggregator, to avoid cyclic imports. -->
+    <packaging>pom</packaging>
+    <!-- <name> formatting is used by autorelease to parse and notify projects on
+         build failure. Please do not modify this unless you have a good reason. -->
+    <name>ODL :: integration :: properties</name>
+    <!-- Avoid ${project.*} in parent poms. -->
+    <description>POM defining upstream public versions as properties, to be used as parent for artifact pom definitions.</description>
+    <url>https://wiki.opendaylight.org/view/Integration/Distribution</url>
+    <licenses>
+        <license>
+            <name>Eclipse Public License v1.0</name>
+            <url>http://www.eclipse.org/legal/epl-v10.html</url>
+        </license>
+    </licenses>
+    <!-- FIXME: Add developers section -->
+    <scm>
+        <connection>scm:git:https://git.opendaylight.org/gerrit/integration/distribution.git</connection>
+        <developerConnection>scm:git:ssh://git.opendaylight.org:29418/integration/distribution.git</developerConnection>
+        <url>https://git.opendaylight.org/gerrit/gitweb?p=integration/distribution.git;a=tree;f=artifacts/upstream/properties;hb=HEAD</url>
+        <tag>HEAD</tag>
+    </scm>
+    <!-- TODO: If only artifact-artifacts is used, hardcode versions there and delete this. -->
+    <properties>
+        <!-- Version properties by project or component. -->
+        <!-- Keep this list sorted alphabetically please. -->
+        <aaa.version>0.9.0-SNAPSHOT</aaa.version>
+        <benchmark.version>1.7.0-SNAPSHOT</benchmark.version>
+        <bgpcep.version>0.11.0-SNAPSHOT</bgpcep.version>
+        <coe.version>0.5.0-SNAPSHOT</coe.version>
+        <config.version>0.10.0-SNAPSHOT</config.version>
+        <controller.extras.version>1.12.0-SNAPSHOT</controller.extras.version>
+        <daexim.version>1.5.0-SNAPSHOT</daexim.version>
+        <genius.version>0.6.0-SNAPSHOT</genius.version>
+        <infrautils.version>1.5.0-SNAPSHOT</infrautils.version>
+        <lispflowmapping.version>1.9.0-SNAPSHOT</lispflowmapping.version>
+        <mdsal.version>1.9.0-SNAPSHOT</mdsal.version>
+        <netconf.version>1.6.0-SNAPSHOT</netconf.version>
+        <netvirt.version>0.8.0-SNAPSHOT</netvirt.version>
+        <neutron.version>0.12.0-SNAPSHOT</neutron.version>
+        <odlparent.version>4.0.2</odlparent.version>
+        <openflowplugin.version>0.8.0-SNAPSHOT</openflowplugin.version>
+        <ovsdb.version>1.8.0-SNAPSHOT</ovsdb.version>
+        <restconf.version>1.9.0-SNAPSHOT</restconf.version>
+        <serviceutils.version>0.3.0-SNAPSHOT</serviceutils.version>
+        <sfc.version>0.9.0-SNAPSHOT</sfc.version>
+        <!-- Keep this list sorted alphabetically please. -->
+    </properties>
+</project>

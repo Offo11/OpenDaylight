@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:odl="http://opendaylight.org/xmlns/blueprint/v1.0.0"
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+    odl:restart-dependents-on-updates="false">
+
+  <cm:property-placeholder persistent-id="org.opendaylight.mdsal.dom.notification" update-strategy="none">
+    <cm:default-properties>
+      <cm:property name="notification-queue-depth" value="65536"/>
+      <cm:property name="notification-queue-spin" value="0"/>
+      <cm:property name="notification-queue-park" value="0"/>
+    </cm:default-properties>
+  </cm:property-placeholder>
+
+  <!-- Schema Service -->
+
+  <odl:static-reference id="schemaService" interface="org.opendaylight.mdsal.dom.api.DOMSchemaService"/>
+
+  <!-- DOM Notification Service -->
+
+  <bean id="domNotificationRouter" class="org.opendaylight.mdsal.dom.broker.DOMNotificationRouter"
+          factory-method="create">
+    <argument value="${notification-queue-depth}"/>
+    <argument value="${notification-queue-spin}"/>
+    <argument value="${notification-queue-park}"/>
+    <argument value="MILLISECONDS"/>
+  </bean>
+
+  <service ref="domNotificationRouter" odl:type="default">
+    <interfaces>
+      <value>org.opendaylight.mdsal.dom.api.DOMNotificationService</value>
+      <value>org.opendaylight.mdsal.dom.api.DOMNotificationPublishService</value>
+      <value>org.opendaylight.mdsal.dom.spi.DOMNotificationSubscriptionListenerRegistry</value>
+    </interfaces>
+  </service>
+
+  <!-- DOM RPC Service -->
+
+  <bean id="domRpcRouter" class="org.opendaylight.mdsal.dom.broker.DOMRpcRouter"
+          factory-method="newInstance" destroy-method="close">
+    <argument ref="schemaService"/>
+  </bean>
+
+  <bean id="domRpcService" factory-ref="domRpcRouter" factory-method="getRpcService"/>
+  <service ref="domRpcService" odl:type="default">
+    <interfaces>
+      <value>org.opendaylight.mdsal.dom.api.DOMRpcService</value>
+    </interfaces>
+  </service>
+
+  <bean id="domRpcProviderService" factory-ref="domRpcRouter" factory-method="getRpcProviderService"/>
+  <service ref="domRpcProviderService" odl:type="default">
+    <interfaces>
+      <value>org.opendaylight.mdsal.dom.api.DOMRpcProviderService</value>
+    </interfaces>
+  </service>
+
+  <bean id="domActionService" factory-ref="domRpcRouter" factory-method="getActionService"/>
+  <service ref="domActionService" odl:type="default">
+    <interfaces>
+      <value>org.opendaylight.mdsal.dom.api.DOMActionService</value>
+    </interfaces>
+  </service>
+
+  <bean id="domActionProviderService" factory-ref="domRpcRouter" factory-method="getActionProviderService"/>
+  <service ref="domActionProviderService" odl:type="default">
+    <interfaces>
+      <value>org.opendaylight.mdsal.dom.api.DOMActionProviderService</value>
+    </interfaces>
+  </service>
+
+  <!-- DOM MountPoint Service -->
+
+  <bean id="domMountPointService" class="org.opendaylight.mdsal.dom.broker.DOMMountPointServiceImpl"/>
+
+  <service ref="domMountPointService" interface="org.opendaylight.mdsal.dom.api.DOMMountPointService"
+        odl:type="default"/>
+
+  <!-- DOM PingPong Data Broker -->
+
+  <reference id="domDefaultDataBroker" interface="org.opendaylight.mdsal.dom.api.DOMDataBroker"
+      odl:type="default"/>
+
+  <bean id="domPingPongDataBroker" class="org.opendaylight.mdsal.dom.broker.pingpong.PingPongDataBroker">
+    <argument ref="domDefaultDataBroker"/>
+  </bean>
+
+  <service ref="domPingPongDataBroker" interface="org.opendaylight.mdsal.dom.api.DOMDataBroker"
+      odl:type="pingpong"/>
+
+</blueprint>

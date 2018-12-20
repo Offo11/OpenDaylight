@@ -1,0 +1,65 @@
+module opendaylight-sdni-qos-msg {
+    namespace "urn:opendaylight:params:xml:ns:yang:sdninterfaceapp:qos:msg";
+    prefix qosmsg;
+    
+    import opendaylight-statistics-types {prefix stat-types;revision-date "2013-09-25";}
+
+    description "Sdni QoS Data structures.";
+
+    revision "2015-10-06" {
+        description "Initial revision of port statistics model";
+    }
+
+    // RPC calls
+    rpc get-all-node-connectors-statistics {
+
+        description "Get statistics for all node connectors from the node of own controller";
+        output {
+		uses nodes;
+        }
+    }
+
+    rpc get-all-peer-node-connectors-statistics {
+
+        description "Get statistics for all node connectors from the node of peer controllers";
+        output {
+              list controllers {
+                  uses nodes;
+             }
+        }  
+    }
+
+        container sdn-controllers {
+        status deprecated;
+
+        leaf-list sdnController {
+             type string;
+
+        }
+    } 
+    grouping nodes {
+              leaf controller-ip {
+                type string;
+                description "
+                    It gives the IP Address of contoller.";
+            }
+                    list node-list {
+                             key "node-id";
+                             leaf node-id {
+                                type string;
+                              } 
+                             list port-list {
+                                   leaf port-id {
+                                       type string;
+                                   }
+                                    list port-params {
+                             leaf port-name {
+                                type string;
+                              }
+                                        uses stat-types:node-connector-statistics;
+                                    }
+                             }
+                   }
+
+    }
+}

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2017 AT&T Intellectual Property. All rights reserved.
+
+  This program and the accompanying materials are made available under the
+  terms of the Eclipse Public License v1.0 which accompanies this distribution,
+  and is available at http://www.eclipse.org/legal/epl-v10.html
+-->
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:odl="http://opendaylight.org/xmlns/blueprint/v1.0.0">
+
+    <bean id="Stateful07TopologySessionListenerFactory"
+          class="org.opendaylight.bgpcep.pcep.topology.provider.Stateful07TopologySessionListenerFactory"/>
+    <service ref="Stateful07TopologySessionListenerFactory"
+             interface="org.opendaylight.bgpcep.pcep.topology.provider.TopologySessionListenerFactory"/>
+    
+    <reference id="dataBroker" interface="org.opendaylight.mdsal.binding.api.DataBroker"
+               odl:type="pingpong"/>
+    <reference id="rpcProviderService" interface="org.opendaylight.mdsal.binding.api.RpcProviderService"/>
+    <reference id="pcepDispatcher" interface="org.opendaylight.protocol.pcep.PCEPDispatcher"/>
+    <reference id="clusterSingletonServiceProvider"
+               interface="org.opendaylight.mdsal.singleton.common.api.ClusterSingletonServiceProvider"/>
+    <reference id="intructionFactory" interface="org.opendaylight.bgpcep.programming.spi.InstructionSchedulerFactory"/>
+    <reference id="topologySessionStatsRegistry"
+               interface="org.opendaylight.bgpcep.pcep.topology.spi.stats.TopologySessionStatsRegistry"/>
+
+    <bean id="pcepTopologyDeployer"
+          class="org.opendaylight.bgpcep.pcep.topology.provider.config.PCEPTopologyDeployerImpl"
+          init-method="init"
+          destroy-method="close">
+        <argument ref="blueprintContainer"/>
+        <argument ref="dataBroker"/>
+        <argument ref="intructionFactory"/>
+    </bean>
+
+    <bean id="PCEPTopologyProviderBean"
+          class="org.opendaylight.bgpcep.pcep.topology.provider.config.PCEPTopologyProviderBean"
+          scope="prototype">
+        <argument ref="clusterSingletonServiceProvider"/>
+        <argument ref="blueprintBundleContext"/>
+        <argument ref="dataBroker"/>
+        <argument ref="pcepDispatcher"/>
+        <argument ref="rpcProviderService"/>
+        <argument ref="Stateful07TopologySessionListenerFactory"/>
+        <argument ref="topologySessionStatsRegistry"/>
+    </bean>
+</blueprint>
